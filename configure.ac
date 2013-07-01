@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([reiserfsprogs], [3.6.22], [reiserfs-devel@vger.kernel.org])
+AC_INIT([reiserfsprogs], [3.6.23], [reiserfs-devel@vger.kernel.org])
 AC_CANONICAL_HOST
 AC_PREREQ(2.50)
 

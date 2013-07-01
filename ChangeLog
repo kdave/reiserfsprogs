@@ -1,3 +1,17 @@
+2013-07-01
+	3.6.23 release.
+	clean up build environment
+	clean up io-failure-emulation logic a bit
+	mkreiserfs: stop printing credits
+	reiserfscore: add support for register_printf_specifier
+	reiserfsck: support `fsck -f -n`
+	reiserfscore: fix uninitialized variable warning in print_indirect_item
+	reiserfsprogs: fix -Wpointer-sign warnings for blocksize and position
+	debugreiserfs: fix dereferencing type-punned pointer warning
+	reiserfsprogs: fix unsigned char with strlen/strcmp/strncpy warnings
+	reiserfsprogs: fix printf formatting warnings
+	reiserfsprogs: fix set-but-not-used gcc warnings
+	reiserfsprogs: remove autoconf-generated files
 2012-10-16
 	3.6.22 release.
 	- Fix signedness issues for large file systems
