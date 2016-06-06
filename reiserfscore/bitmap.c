@@ -260,9 +260,9 @@ static int reiserfs_fetch_ondisk_bitmap(reiserfs_bitmap_t *bm,
 
 			bh = getblk(fs->fs_dev, block, fs->fs_blocksize);
 			if (!bh) {
-				reiserfs_exit(1,
-					      "reiserfs_fetch_ondisk_bitmap: "
-					      "getblk failed");
+				reiserfs_warning(stderr, "%s: getblk failed",
+						 __func__);
+				return -1;
 			}
 
 			memset(bh->b_data, 0xff, bh->b_size);
@@ -316,7 +316,7 @@ static int reiserfs_fetch_ondisk_bitmap(reiserfs_bitmap_t *bm,
 }
 
 /* copy bitmap 'bm' to buffers which hold on-disk bitmap if bitmap was ever
-   changed and return 1. Otherwise - return 0 */
+   changed and return 1. Otherwise - return 0. Returns -1 on error. */
 int reiserfs_flush_to_ondisk_bitmap(reiserfs_bitmap_t *bm,
 				    reiserfs_filsys_t fs)
 {
@@ -354,7 +354,9 @@ int reiserfs_flush_to_ondisk_bitmap(reiserfs_bitmap_t *bm,
 		/* we bread to make sure that filesystem contains enough blocks */
 		bh = getblk(fs->fs_dev, block, fs->fs_blocksize);
 		if (!bh) {
-			reiserfs_exit(1, "Getblk failed for (%lu)\n", block);
+			reiserfs_warning(stderr, "Getblk failed for (%lu)\n",
+					 block);
+			return -1;
 		}
 
 		memset(bh->b_data, 0xff, bh->b_size);
@@ -746,8 +748,11 @@ int reiserfs_create_ondisk_bitmap(reiserfs_filsys_t fs)
 
 void reiserfs_close_ondisk_bitmap(reiserfs_filsys_t fs)
 {
+	int ret;
 	if (!fs->fs_bitmap2)
 		return;
-	reiserfs_flush_to_ondisk_bitmap(fs->fs_bitmap2, fs);
+	ret = reiserfs_flush_to_ondisk_bitmap(fs->fs_bitmap2, fs);
+	if (ret < 0)
+		reiserfs_exit(1, "Exiting after unrecoverable error.");
 	reiserfs_free_ondisk_bitmap(fs);
 }

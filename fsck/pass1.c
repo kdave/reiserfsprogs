@@ -617,7 +617,9 @@ static void save_pass_1_result(reiserfs_filsys_t fs)
 	/* to be able to get a new bitmap on pass2 we should flush it on disk
 	   new_bitmap should not be flushed on disk if run without -d option, as
 	   if fsck fails on pass1 we get wrong bitmap on the next fsck start */
-	reiserfs_flush_to_ondisk_bitmap(fsck_new_bitmap(fs), fs);
+	retval = reiserfs_flush_to_ondisk_bitmap(fsck_new_bitmap(fs), fs);
+	if (retval < 0)
+		reiserfs_exit(1, "Exiting after unrecoverable error.");
 
 	/* to be able to restart with pass 2 we need bitmap of
 	   uninsertable blocks and bitmap of alocable blocks */

@@ -14,6 +14,7 @@ void pass_4_check_unaccessed_items(void)
 	struct item_head *ih;
 	unsigned long items;
 	const struct reiserfs_key *rdkey;
+	int ret;
 
 	path.path_length = ILLEGAL_PATH_ELEMENT_OFFSET;
 	key = root_dir_key;
@@ -83,7 +84,9 @@ cont:
 	fsck_progress("Flushing..");
 	fs->fs_dirt = 1;
 	id_map_flush(proper_id_map(fs), fs);
-	reiserfs_flush_to_ondisk_bitmap(fs->fs_bitmap2, fs);
+	ret = reiserfs_flush_to_ondisk_bitmap(fs->fs_bitmap2, fs);
+	if (ret < 0)
+		reiserfs_exit(1, "Exiting after unrecoverable error.");
 	reiserfs_flush(fs);
 	fsck_progress("finished\n");
 

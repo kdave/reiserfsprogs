@@ -1146,7 +1146,9 @@ static void before_check_fs_tree(reiserfs_filsys_t fs)
 static void after_check_fs_tree(reiserfs_filsys_t fs)
 {
 	if (fsck_mode(fs) == FSCK_FIX_FIXABLE) {
-		reiserfs_flush_to_ondisk_bitmap(fs->fs_bitmap2, fs);
+		int ret = reiserfs_flush_to_ondisk_bitmap(fs->fs_bitmap2, fs);
+		if (ret < 0)
+			reiserfs_exit(1, "Exiting after unrecoverable error.");
 		reiserfs_flush(fs);
 		fs->fs_dirt = 1;
 		reiserfs_bitmap_delta(source_bitmap, control_bitmap);

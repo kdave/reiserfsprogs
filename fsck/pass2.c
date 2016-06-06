@@ -555,6 +555,7 @@ cont:
 static void after_pass_2(reiserfs_filsys_t fs)
 {
 	time_t t;
+	int ret;
 
 	/* we can now flush new_bitmap on disk as tree is built and
 	   contains all data, which were found on dik at start in
@@ -584,7 +585,9 @@ static void after_pass_2(reiserfs_filsys_t fs)
 	fsck_progress("Flushing..");
 	id_map_flush(proper_id_map(fs), fs);
 	fs->fs_dirt = 1;
-	reiserfs_flush_to_ondisk_bitmap(fs->fs_bitmap2, fs);
+	ret = reiserfs_flush_to_ondisk_bitmap(fs->fs_bitmap2, fs);
+	if (ret < 0)
+		reiserfs_exit(1, "Exiting after unrecoverable error.");
 	reiserfs_flush(fs);
 	fsck_progress("finished\n");
 

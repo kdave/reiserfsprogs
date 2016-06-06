@@ -332,6 +332,7 @@ void load_lost_found_result(reiserfs_filsys_t fs)
 
 static void after_lost_found(reiserfs_filsys_t fs)
 {
+	int ret;
 	/* update super block: objectid map, fsck state */
 	set_sb_fs_state(fs->fs_ondisk_sb, LOST_FOUND_DONE);
 	mark_buffer_dirty(fs->fs_super_bh);
@@ -340,7 +341,9 @@ static void after_lost_found(reiserfs_filsys_t fs)
 	fsck_progress("Flushing..");
 	id_map_flush(proper_id_map(fs), fs);
 	fs->fs_dirt = 1;
-	reiserfs_flush_to_ondisk_bitmap(fsck_new_bitmap(fs), fs);
+	ret = reiserfs_flush_to_ondisk_bitmap(fsck_new_bitmap(fs), fs);
+	if (ret < 0)
+		reiserfs_exit(1, "Exiting after unrecoverable error.");
 	reiserfs_flush(fs);
 	fsck_progress("finished\n");
 
