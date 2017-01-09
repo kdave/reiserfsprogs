@@ -1581,7 +1581,7 @@ static inline void buffer_info_init_bh(const struct tree_balance *tb,
 				       struct buffer_info *bi,
 				       struct buffer_head *bh)
 {
-	bi->bi_fs	= tb->tb_fs;
+	bi->bi_fs	= tb ? tb->tb_fs : NULL;
 	bi->bi_bh	= bh;
 	bi->bi_parent	= NULL;
 	bi->bi_position = 0;
