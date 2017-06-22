@@ -1,3 +1,8 @@
+2017-06-22
+	3.6.26 release.
+	Fixes a NULL pointer dereference caused by reiserfsck.
+	build: libcom_err is required
+	reiserfscore: add reiserfs_err.et to EXTRA_DIST
 2016-06-06
 	3.6.25 release.
 	reiserfsprogs: use com_err in reiserfs_open
