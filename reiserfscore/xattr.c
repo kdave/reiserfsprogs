@@ -84,19 +84,19 @@ inline __u32 reiserfs_xattr_hash(const char *msg, int len)
 	return csum_partial(msg, len, 0);
 }
 
-
 int reiserfs_check_xattr(const void *body, int len)
 {
 	const struct reiserfs_xattr_header *xah = body;
 	int hdrsz = sizeof(struct reiserfs_xattr_header);
-	__u32 hash;
+	__u32 hash, disk_hash;
 
 	if (len < hdrsz)
 		return -EINVAL;
 
 	hash = reiserfs_xattr_hash(body + hdrsz, len - hdrsz);
+	disk_hash = le32_to_cpu(xah->h_hash);
 	return xah->h_magic == cpu_to_le32(REISERFS_XATTR_MAGIC) &&
-	       le32_to_cpu(xah->h_hash) == hash;
+	      (disk_hash == hash || from32to16(disk_hash) == hash);
 }
 
 int reiserfs_acl_count(size_t size)
