@@ -1,3 +1,9 @@
+2017-07-25
+	3.6.27 release.
+	build: properly define version in reiserfscore.pc
+	misc: include <sys/sysmacros.h>
+	xattrs: handle both hash forms in reiserfs_check_xattr
+	reiserfscore: reiserfs_flush_to_ondisk_bitmap shouldn't exit
 2017-06-22
 	3.6.26 release.
 	Fixes a NULL pointer dereference caused by reiserfsck.
