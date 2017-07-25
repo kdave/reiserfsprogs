@@ -5,6 +5,6 @@ includedir=@includedir@
 
 Name: reiserfscore
 Description: ReiserFS Core Library
-Version: @REISERFSPROGS_VERSION@
+Version: @PACKAGE_VERSION@
 Cflags: -I${includedir}/reiserfs -I${includedir}
 Libs: -L${libdir} -lreiserfscore
