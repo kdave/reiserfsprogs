@@ -34,8 +34,7 @@ Note: At the time of writing the relocated journal was implemented for a special
 release of ReiserFS, and was not expected to be put into the mainstream kernel
 until approximately Linux 2.5.  This means that if you have the stock kernel you 
 must apply a special patch. Without this patch the kernel will refuse to mount 
-the newly modified file system.  We will charge $25 to explain this to you if 
-you ask us why it doesn't work.
+the newly modified file system.
 .PP
 Perhaps the most interesting application of this code is to put the
 journal on a solid state disk.
